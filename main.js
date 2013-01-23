@@ -17,7 +17,7 @@ window.onload = function() {
      player = new rect(1,560,10,9);
      player.draw();
          	
-     	setInterval(function(){player.draw()}, 1000/60);
+     	setInterval(function(){player.draw()}, 1000/60); //отрисовываем игрока с частотой 60 fps
     	setInterval(function(){gravity()}, 100 );
     	
 }
@@ -58,10 +58,10 @@ function jumpPlayer()
 	player.y -= 20;
 }
 
-var forwardId;
+var forwardId; //id для интервалов ходьбы вперед и назад
 var backId;
 
-function doKeyDown(event)
+function doKeyDown(event) //при нажатии клавиш управления
 {
 	if(event.keyCode == 39) //вперед
 		{
@@ -97,7 +97,7 @@ function doKeyDown(event)
 		}
 }
 
-function doKeyUp(event)
+function doKeyUp(event) //при отжатии клавиши вперед или назад
 {
 
 	if(event.keyCode == 39) //вперед
