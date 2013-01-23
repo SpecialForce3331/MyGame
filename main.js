@@ -17,7 +17,7 @@ window.onload = function() {
      player = new rect(1,560,10,9);
      player.draw();
          	
-     	setInterval(function(){player.draw()}, 16);
+     	setInterval(function(){player.draw()}, 1000/60);
     	setInterval(function(){gravity()}, 100 );
     	
 }
@@ -65,11 +65,17 @@ function doKeyDown(event)
 {
 	if(event.keyCode == 39) //вперед
 		{
-			forwardId = setInterval(function(){movePlayer(5, -1)}, 30 );
+			if(forwardId == null )
+				{
+					forwardId = setInterval(function(){movePlayer(5, -1)}, 30 );
+				}
 		}
 	else if(event.keyCode == 37) //назад
 		{
-			backId = setInterval(function(){movePlayer(-5, +1)}, 30 );
+			if(backId == null)
+				{
+					backId = setInterval(function(){movePlayer(-5, +1)}, 30 );
+				}
 		}
 	else if(event.keyCode == 38) //прыжок
 		{
@@ -97,10 +103,12 @@ function doKeyUp(event)
 	if(event.keyCode == 39) //вперед
 	{
 		clearInterval(forwardId);
+		forwardId = null;
 	}
 	else if(event.keyCode == 37) //назад
 	{
 		clearInterval(backId);
+		backId = null;
 	}
 
 }
