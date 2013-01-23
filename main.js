@@ -63,34 +63,34 @@ var backId;
 
 function doKeyDown(event) //при нажатии клавиш управления
 {
-	if(event.keyCode == 39) //вперед
+	if(event.keyCode == 68) //вперед
 		{
 			if(forwardId == null )
 				{
 					forwardId = setInterval(function(){movePlayer(5, -1)}, 30 );
 				}
 		}
-	else if(event.keyCode == 37) //назад
+	else if(event.keyCode == 65) //назад
 		{
 			if(backId == null)
 				{
 					backId = setInterval(function(){movePlayer(-5, +1)}, 30 );
 				}
 		}
-	else if(event.keyCode == 38) //прыжок
+	else if(event.keyCode == 87) //прыжок
 		{
 			jumpPlayer();
 		}
-	else if(event.keyCode == 40) //присед
+	else if(event.keyCode == 83) //присед
 		{
 			downPlayer();
 		}
-	else if( event.keyCode == 39 && event.keyCode == 38 ) //прыжок со смещением вперед
+	else if( event.keyCode == 68 && event.keyCode == 87 ) //прыжок со смещением вперед
 		{
 			jumpPlayer();
 			movePlayer(5, -1);
 		}
-	else if( event.keyCode == 37 && event.keyCode == 38 ) //прыжок со смещением назад
+	else if( event.keyCode == 65 && event.keyCode == 87 ) //прыжок со смещением назад
 		{
 			jumpPlayer();
 			movePlayer(-5, -1);
@@ -100,12 +100,12 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 function doKeyUp(event) //при отжатии клавиши вперед или назад
 {
 
-	if(event.keyCode == 39) //вперед
+	if(event.keyCode == 68) //вперед
 	{
 		clearInterval(forwardId);
 		forwardId = null;
 	}
-	else if(event.keyCode == 37) //назад
+	else if(event.keyCode == 65) //назад
 	{
 		clearInterval(backId);
 		backId = null;
