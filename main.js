@@ -1,6 +1,9 @@
 window.onload = function() {
 	
+	
 	window.addEventListener('keydown',doKeyDown,true); //слушаем нажатие клавиш
+	window.addEventListener('keyup',doKeyUp,true); //слушаем нажатие клавиш
+
 	
 	var drawingCanvas = document.getElementById('smile');
 	context = drawingCanvas.getContext('2d');
@@ -55,15 +58,18 @@ function jumpPlayer()
 	player.y -= 20;
 }
 
+var forwardId;
+var backId;
+
 function doKeyDown(event)
 {
 	if(event.keyCode == 39) //вперед
 		{
-			movePlayer(5, -1);
+			forwardId = setInterval(function(){movePlayer(5, -1)}, 30 );
 		}
 	else if(event.keyCode == 37) //назад
 		{
-			movePlayer(-5, +1);
+			backId = setInterval(function(){movePlayer(-5, +1)}, 30 );
 		}
 	else if(event.keyCode == 38) //прыжок
 		{
@@ -79,8 +85,22 @@ function doKeyDown(event)
 			movePlayer(5, -1);
 		}
 	else if( event.keyCode == 37 && event.keyCode == 38 ) //прыжок со смещением назад
+		{
+			jumpPlayer();
+			movePlayer(-5, -1);
+		}
+}
+
+function doKeyUp(event)
+{
+
+	if(event.keyCode == 39) //вперед
 	{
-		jumpPlayer();
-		movePlayer(-5, -1);
+		clearInterval(forwardId);
 	}
+	else if(event.keyCode == 37) //назад
+	{
+		clearInterval(backId);
+	}
+
 }
