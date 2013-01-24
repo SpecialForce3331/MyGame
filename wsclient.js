@@ -1,6 +1,6 @@
 
-var wsUri = "ws://172.0.0.1:8080/ServerWS";
-
+//var wsUri = "ws://172.0.0.1:8080/ServerWS";
+var wsUri = "ws://427044.dyn.ufanet.ru:8080/ServerWS";
 var output;
 
 function init()
@@ -14,7 +14,6 @@ function testWebSocket()
 	websocket = new WebSocket(wsUri); 
 	websocket.onopen = function(evt) 
 	{ 
-		alert("open");
 		onOpen(evt);
 	}; 
 	websocket.onclose = function(evt) 
@@ -42,7 +41,7 @@ function onClose(evt)
 }  
 function onMessage(evt) 
 {
-	writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>'); websocket.close(); 
+	writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>'); //websocket.close(); 
 }  
 function onError(evt) 
 {
@@ -60,4 +59,4 @@ function writeToScreen(message)
 	output.appendChild(pre); 
 }
 
-window.addEventListener("load", init, false); 
+window.addEventListener("load", init, false);
