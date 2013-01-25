@@ -1,3 +1,6 @@
+var context;
+var drawingCanvas;
+
 window.onload = function() {
 	
 	
@@ -5,60 +8,87 @@ window.onload = function() {
 	window.addEventListener('keyup',doKeyUp,true); //слушаем нажатие клавиш
 
 	
-	var drawingCanvas = document.getElementById('smile');
+	drawingCanvas = document.getElementById('smile');
 	context = drawingCanvas.getContext('2d');
+	
      // Рисуем землю
      context.moveTo(0.5,590);
      context.lineTo(890,590);
      context.strokeStyle = "#000";
      context.stroke();
      
-     //рисуем игрока
-     player = new rect(1,560,10,9);
+     //рисуем игрока 
+     player = new user(1, 560, 10, 10);
+     player.color = "#000000";
      player.draw();
-         	
-     	setInterval(function(){player.draw()}, 1000/60); //отрисовываем игрока с частотой 60 fps
-    	setInterval(function(){gravity()}, 100 );
+     
+     //рисуем второго игрока
+     player2 = new user(100, 560, 10, 10);
+     player2.color = "#FF0000";
+     player2.draw();
+     
+     	setInterval(function(){player.draw();}, 1000/60); //отрисовываем игрока с частотой 60 fps
+    	//setInterval(function(){player.gravity()}, 100 );
+    	
+    	setInterval(function(){player2.draw();}, 1000/60); //отрисовываем игрока с частотой 60 fps
+    	//setInterval(function(){player2.gravity()}, 100 );
     	
 }
 
-
-function rect(x, y, width, height)
+function user(x, y, width, height)
 {
+	this.myContext = context;
 	this.x = x;
 	this.y = y;
 	this.width = width;
 	this.height = height;
+	this.color;
+	this.mass = 2;
 	this.draw = function()
 	{
-		
-		context.fillRect(this.x, this.y, this.width, this.height);
+		this.myContext.fillStyle = this.color;
+		this.myContext.fillRect(this.x, this.y, this.width, this.height);
 	}
 }
 
-function gravity()
-{
-	if ( player.y <= 560 )
-		{
-			context.clearRect(player.x, player.y, 10, 9);
-			player.y += 20;
-		}
-
-}
 
 function movePlayer(y, z) //передвижение игрока
 {
-	context.clearRect(player.x + z, player.y, 10, 9); //если от оси Х не отнять (прибавить в случае движения другую сторону) единицу остаются полосы на экране
+	context.clearRect(player.x + z, player.y, 10, 10);
 	player.x = player.x + y;
 }
 
 function jumpPlayer()
 {
-	context.clearRect(player.x, player.y, 10, 9);
-	player.y -= 20;
+	var i = 10;
+	while( i > 0)
+	{	
+		context.clearRect(player.x, player.y, 10, 10);
+		player.y -= i;
+		i--;
+	}
+		
+	gravity();
 }
 
-var forwardId; //id для интервалов ходьбы вперед и назад
+function gravity()
+{
+	var i = 1;
+	while( player.y < 580 )
+	{
+		player.myContext.clearRect(player.x, player.y, 10, 10);
+		player.y += i;
+		i++;
+		player.draw();
+		if (player.y > 580)
+		{
+			player.y = 580;
+			break;
+		}
+	}
+}
+
+var forwardId; //id для интервалов ходьбы вперед и назад (чтобы не стакалось)
 var backId;
 
 function doKeyDown(event) //при нажатии клавиш управления
