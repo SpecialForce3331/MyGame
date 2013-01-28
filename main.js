@@ -54,7 +54,7 @@ function movePlayer(y) //передвижение игрока
 {
 	context.clearRect(player.x, player.y, 10, 10);
 	player.x = player.x + y;
-	doSend(player.x +','+ player.y)
+	doSend(player.x +','+ player.y);
 }
 function movePlayer2(x,y)
 {
@@ -68,6 +68,7 @@ function jumpPlayer()
 {
 	context.clearRect(player.x, player.y, 10, 10);
 	player.y -= 80;
+	doSend(player.x +','+ player.y);
 }
 
 function gravity()
@@ -76,11 +77,13 @@ function gravity()
 		{
 			player.myContext.clearRect(player.x, player.y, 10, 10);
 			player.y += 10;
+			doSend(player.x +','+ player.y);
 		}
 	else if(player.y > 280 ) //если ниже уровня земли
 		{
 			player.myContext.clearRect(player.x, player.y, 10, 10);
 			player.y = 280;
+			doSend(player.x +','+ player.y);
 		}
 }
 
