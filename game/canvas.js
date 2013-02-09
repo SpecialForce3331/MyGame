@@ -34,99 +34,38 @@ window.onload = function() {
      //рисуем игрока 
      player = new user(10, canvasHeight-20, 10, 10);
      player.id = 1;
-     player.color = "#000000";
-     player.draw();
-     
-     //рисуем второго игрока
-     player2 = new user(40, canvasHeight-20, 10, 10);
-     player2.id = 2;
-     player2.color = "#FF0000";
-     player2.draw();
-     
-   //рисуем третьего игрока
-     player3 = new user(80, canvasHeight-20, 10, 10);
-     player3.id = 3;
-     player3.color = "blue";
-     player3.draw();
-     
+     player.id.color = "#000000";
+     player.id.draw();
+ 
    //отрисовываем игроков с частотой 60 fps, 24 кадра в секунду
- 	setInterval(function(){player.draw();}, 2.5); 
-	setInterval(function(){player2.draw();}, 2.5);
-	setInterval(function(){player3.draw();}, 2.5); 
-    	
-	//гравитация
-	setInterval(function(){gravity();}, 30 ); 
-    	
+ 	setInterval(function(){player.1.draw();}, 2.5); 
+	setInterval(function(){player.2.draw();}, 2.5);
+	setInterval(function(){player.3.draw();}, 2.5); 
+   	
 }
 
 function user(x, y, width, height) //прототип игрока
 {
 	this.id;
-	this.myContext = context;
-	this.x = x;
-	this.y = y;
-	this.width = width;
-	this.height = height;
-	this.color;
-	this.mass = 2;
-	this.draw = function()
+	this.id.myContext = context;
+	this.id.x = x;
+	this.id.y = y;
+	this.id.width = width;
+	this.id.height = height;
+	this.id.color;
+	this.id.mass = 2;
+	this.id.draw = function( x,y )
 	{
-		this.myContext.fillStyle = this.color;
-		this.myContext.fillRect(this.x, this.y, this.width, this.height);
+		this.id.myContext.fillStyle = this.color;
+		this.id.myContext.fillRect(this.id + "." + x, this.id + "." + y, this.id.width, this.id.height);
 	}
 }
 
 
-function movePlayer(z) //передвижение игрока
+function movePlayer(id, direction) //передвижение игрока
 {
-	context.clearRect(player.x, player.y, 10, 10);
-	
-	if( (player.x + z) < canvasWidth && (player.x + z) > 0 ) //проверка на выход за границы
-	{
-		player.x = player.x + z;
-	}
-	
-	doSend(player.id + ',' + player.x +','+ player.y); //отправляем координаты и id через функцию файла wsclient.js
-}
 
-function movePlayer2(x,y) //движение второго игрока
-{
-	context.clearRect(player2.x, player2.y, 10, 10);
-	player2.x = x;
-	player2.y = y;
-}
-
-function movePlayer3(x,y) //движение второго игрока
-{
-	context.clearRect(player3.x, player3.y, 10, 10);
-	player3.x = x;
-	player3.y = y;
-}	
-
-function jumpPlayer() //прыжок
-{
-	context.clearRect(player.x, player.y, 10, 10);
-	player.y -= 80;
-	
-	doSend(player.id + ',' + player.x +','+ player.y); 
-}
-
-function gravity() //якобы гравитация ))
-{
-	if (player.y < (canvasHeight-20) ) //пока находится в воздухе
-		{
-			player.myContext.clearRect(player.x, player.y, 10, 10);
-			player.y += 10;
-			
-			doSend(player.id + ',' + player.x +','+ player.y);
-		}
-	else if(player.y > (canvasHeight-20) ) //если ниже уровня земли
-		{
-			player.myContext.clearRect(player.x, player.y, 10, 10);
-			player.y = 280;
-			
-			doSend(player.id + ',' + player.x +','+ player.y);
-		}
+	doSend("move" + "," + player + "." + id + "," + direction ); //отправляем координаты и id через функцию файла wsclient.js
 }
 
 var forwardId; //id для интервалов ходьбы вперед и назад (чтобы не суммировалась скорость)
@@ -138,33 +77,33 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 		{
 			if( forwardId == null )
 				{
-					forwardId = setInterval(function(){movePlayer(5);}, 30 ); //идем пока клавиша нажата
+					forwardId = setInterval(function(){movePlayer(player.id,"forward");}, 30 ); //идем пока клавиша нажата
 				}
 		}
 	else if( event.keyCode == 65) //назад
 		{
 			if( backId == null)
 				{
-					backId = setInterval(function(){movePlayer(-5);}, 30 ); //идем пока клавиша нажата
+					backId = setInterval(function(){movePlayer(player.id,"back");}, 30 ); //идем пока клавиша нажата
 				}
 		}
 	else if( event.keyCode == 87) //прыжок
 		{
-			jumpPlayer();
+			movePlayer(player.id,"jump");
 		}
 	else if( event.keyCode == 83) //присед
 		{
-			downPlayer();
+			movePlayer(player.id,"down");
 		}
 	else if( event.keyCode == 68 && event.keyCode == 87 ) //прыжок со смещением вперед
 		{
-			jumpPlayer();
-			movePlayer(5, -1);
+			movePlayer(player.id,"jump");
+			movePlayer(player.id,"forward");
 		}
 	else if( event.keyCode == 65 && event.keyCode == 87 ) //прыжок со смещением назад
 		{
-			jumpPlayer();
-			movePlayer(-5, -1);
+			movePlayer(player.id,"jump");
+			movePlayer(player.id,"back");
 		}
 }
 
@@ -182,4 +121,22 @@ function doKeyUp( event ) //при отжатии клавиши вперед и
 		backId = null;
 	}
 
+}
+
+function getId()
+{
+	$.ajax({								
+		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
+		async : false,
+		data : {
+			'action' : 'getId',
+		},
+		dataType : "jsonp",
+		success : function(data) {
+			if(data.result != "false")
+			{
+				player.id = data.result;
+			}
+		}
+	})
 }

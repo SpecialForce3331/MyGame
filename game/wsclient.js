@@ -1,5 +1,5 @@
 
-//var wsUri = "ws://172.0.0.1:8080/ServerWS";
+//var wsUri = "ws://172.0.0.1:8080/GameServer/websocket";
 var wsUri = "ws://427044.dyn.ufanet.ru:8080/GameServer/websocket";
 var output;
 
@@ -43,7 +43,10 @@ function onMessage(evt)
 {	
 	msg = evt.data.split(',');
 	writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>'); //websocket.close();
-	movePlayer2( msg[1],msg[2] );
+	
+	player + msg[0] + "." + myContext + "." + clearRect(); //стираем с экрана текущую позицию пользователя
+	player + msg[0] + "." + draw() //отрисовываем новую
+	
 }  
 function onError(evt) 
 {
