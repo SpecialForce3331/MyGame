@@ -33,9 +33,11 @@ function myWebSocket()
 function onOpen(evt) 
 { 
 	writeToScreen("CONNECTED"); 
+	
+	//отправляем номер игровой сессии, и логин игрока для проверки наличия его в данной игровой сессии 
 	var temp = window.location.search.substr("4");
 	var result = temp.split("$");
-	doSend("id," + result[0] + "," + result[1]); 
+	doSend("id," + result[0] + "," + result[1] + "," + result[2]); 
 }  
 function onClose(evt) 
 {
@@ -44,8 +46,14 @@ function onClose(evt)
 function onMessage(evt) 
 {	
 	msg = evt.data.split(',');
-	writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>');
-	
+	if ( msg[0] == "id" )
+		{
+		
+		}
+	else
+		{
+			writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>');
+		}
 	player + msg[0] + "." + myContext + "." + clearRect(); //стираем с экрана текущую позицию пользователя
 	player + msg[0] + "." + draw(); //отрисовываем новую
 	
@@ -63,11 +71,11 @@ function writeToScreen(message)
 	var pre = document.createElement("p"); 
 	pre.style.wordWrap = "break-word"; 
 	pre.innerHTML = message;
-	
+	/*
 	if(output.hasChildNodes() == true)
 	{
 		output.removeChild(output.childNodes[0]);
-	}
+	}*/
 	output.appendChild(pre); 
 }
 
