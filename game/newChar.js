@@ -8,7 +8,7 @@ function getLogin()
 		},
 		dataType : "jsonp",
 		success : function(data) {
-			if(data.result != "false")
+			if(data.result == 1)
 			{
 				document.getElementById("login").value = data.result;
 			}
@@ -37,7 +37,7 @@ function createChar()
 					},
 					dataType : "jsonp",
 					success : function(data) {
-						if(data.result == "ok")
+						if(data.result == 1)
 						{
 							document.location="/MyGame/main.html";
 						}

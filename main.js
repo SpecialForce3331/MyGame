@@ -4,45 +4,6 @@ var output;
 window.onload = function()
 {
 	output = document.getElementById("output");
-	getLogin();
-	getCharacters();
-}
-
-function getLogin()
-{
-	$.ajax({								
-		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
-		async : false,
-		data : {
-			'action' : 'checkSession'
-		},
-		dataType : "jsonp",
-		success : function(data) {
-			if(data.result != "false")
-			{
-				document.getElementById("login").value = data.result;
-			}
-		}
-	})
-}
-
-function getCharacters()
-{
-	$.ajax({								
-		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
-		async : false,
-		data : {
-			'action' : 'getCharacters',
-			'login' : document.getElementById("login").value
-		},
-		dataType : "jsonp",
-		success : function(data) {
-			if(data.result != "false")
-			{
-				$("#characters").append("<div>" + data.result + "</div>");
-			}
-		}
-	})
 }
 
 function writeToScreen(message) 
