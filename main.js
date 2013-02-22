@@ -33,22 +33,35 @@ window.onload = function() {
      
      //рисуем игрока 
      player = new user(10, canvasHeight-20, 10, 10);
+     player.id = 1;
      player.color = "#000000";
      player.draw();
      
      //рисуем второго игрока
-     player2 = new user(100, canvasHeight-20, 10, 10);
+     player2 = new user(40, canvasHeight-20, 10, 10);
+     player2.id = 2;
      player2.color = "#FF0000";
      player2.draw();
      
-     	setInterval(function(){player.draw();}, 1/40 * 1000); //отрисовываем игрока с частотой 60 fps
-    	setInterval(function(){player2.draw();}, 1/40 * 1000); //отрисовываем игрока с частотой 60 fps
-    	setInterval(function(){gravity();}, 30 ); //гравитация
+   //рисуем третьего игрока
+     player3 = new user(80, canvasHeight-20, 10, 10);
+     player3.id = 3;
+     player3.color = "blue";
+     player3.draw();
+     
+   //отрисовываем игроков с частотой 60 fps, 24 кадра в секунду
+     	setInterval(function(){player.draw();}, 2.5); 
+    	setInterval(function(){player2.draw();}, 2.5);
+    	setInterval(function(){player3.draw();}, 2.5); 
+    	
+    	//гравитация
+    	setInterval(function(){gravity();}, 30 ); 
     	
 }
 
 function user(x, y, width, height) //прототип игрока
 {
+	this.id;
 	this.myContext = context;
 	this.x = x;
 	this.y = y;
@@ -73,7 +86,7 @@ function movePlayer(z) //передвижение игрока
 		player.x = player.x + z;
 	}
 	
-	doSend(player.x +','+ player.y); //отправляем координаты через функцию файла wsclient.js
+	doSend(player.id + ',' + player.x +','+ player.y); //отправляем координаты и id через функцию файла wsclient.js
 }
 
 function movePlayer2(x,y) //движение второго игрока
@@ -82,14 +95,20 @@ function movePlayer2(x,y) //движение второго игрока
 	player2.x = x;
 	player2.y = y;
 }
-	
+
+function movePlayer3(x,y) //движение второго игрока
+{
+	context.clearRect(player3.x, player3.y, 10, 10);
+	player3.x = x;
+	player3.y = y;
+}	
 
 function jumpPlayer() //прыжок
 {
 	context.clearRect(player.x, player.y, 10, 10);
 	player.y -= 80;
 	
-	doSend(player.x +','+ player.y); 
+	doSend(player.id + ',' + player.x +','+ player.y); 
 }
 
 function gravity() //якобы гравитация ))
@@ -99,14 +118,14 @@ function gravity() //якобы гравитация ))
 			player.myContext.clearRect(player.x, player.y, 10, 10);
 			player.y += 10;
 			
-			doSend(player.x +','+ player.y);
+			doSend(player.id + ',' + player.x +','+ player.y);
 		}
 	else if(player.y > (canvasHeight-20) ) //если ниже уровня земли
 		{
 			player.myContext.clearRect(player.x, player.y, 10, 10);
 			player.y = 280;
 			
-			doSend(player.x +','+ player.y);
+			doSend(player.id + ',' + player.x +','+ player.y);
 		}
 }
 

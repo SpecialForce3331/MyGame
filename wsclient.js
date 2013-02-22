@@ -42,8 +42,8 @@ function onClose(evt)
 function onMessage(evt) 
 {
 	msg = evt.data.split(',');
-	writeToScreen('<span style="color: blue;">RESPONSE: ' + msg[0] + " " + msg[1] +'</span>'); //websocket.close();
-	movePlayer2(msg[0],msg[1]);
+	writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " +  msg[1] + " " + msg[2] +'</span>'); //websocket.close();
+	movePlayer2(msg[1],msg[2]);
 }  
 function onError(evt) 
 {
