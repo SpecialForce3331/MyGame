@@ -1,3 +1,18 @@
+//Как только страница прогружена, отображаем поля для авторизации.
+window.onload = function()
+{
+	var inputWindow = " Login:<br/><input type='text' id='login' /><br/>" +
+			"Password:<br/><input type='password' id='password' /><br/>" +
+			"<button onclick='auth();'>Авторизиация</button><br/>" +
+			"<button onclick='reg();'>Регистрация</button><br/>"
+	$("#mainWidow").empty()
+	$("#mainWindow").append(inputWindow);
+
+}
+
+//var login = $("#login").value;
+//var password = $("#password").value;
+
 function auth()
 {
 	$.ajax({								
