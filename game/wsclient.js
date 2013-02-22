@@ -40,7 +40,25 @@ function onOpen(evt)
 	doSend("id," + result[0] + "," + result[1] + "," + result[2]); 
 }  
 function onClose(evt) 
-{
+{	
+	var temp = window.location.search.substr("4");
+	var result = temp.split("$");
+	
+	$.ajax({								
+		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
+		async : false,
+		data : {
+			'action' : 'disconnect',
+			'id' : result[0]
+		},
+		dataType : "jsonp",
+		success : function(data) {
+			if(data.result != "false")
+			{
+				document.location="/MyGame/main.html";
+			}
+		}
+	})
 	writeToScreen("DISCONNECTED"); 
 }  
 function onMessage(evt) 
@@ -48,11 +66,11 @@ function onMessage(evt)
 	msg = evt.data.split(',');
 	if ( msg[0] == "id" )
 		{
-		
+			writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>');
 		}
 	else
 		{
-			writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>');
+			writeToScreen('<span style="color: blue;">RESPONSE: ' +  msg[0] + '</span>');
 		}
 	player + msg[0] + "." + myContext + "." + clearRect(); //стираем с экрана текущую позицию пользователя
 	player + msg[0] + "." + draw(); //отрисовываем новую
