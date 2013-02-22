@@ -33,9 +33,7 @@ function myWebSocket()
 function onOpen(evt) 
 { 
 	writeToScreen("CONNECTED"); 
-	var temp = window.location.search.substr("4");
-	var result = temp.split("$");
-	doSend("id," + result[0] + "," + result[1]); 
+	//doSend("player connected!"); 
 }  
 function onClose(evt) 
 {
