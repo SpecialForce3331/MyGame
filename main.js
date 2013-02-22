@@ -22,18 +22,18 @@ window.onload = function() {
 	context = drawingCanvas.getContext('2d');
 	
      // Рисуем землю
-     context.moveTo(0.5,290);
-     context.lineTo(450,290);
+     context.moveTo(0.5,canvasHeight-10);
+     context.lineTo(450,canvasHeight-10);
      context.strokeStyle = "#000";
      context.stroke();
      
      //рисуем игрока 
-     player = new user(10, 280, 10, 10);
+     player = new user(10, canvasHeight-20, 10, 10);
      player.color = "#000000";
      player.draw();
      
      //рисуем второго игрока
-     player2 = new user(100, 280, 10, 10);
+     player2 = new user(100, canvasHeight-20, 10, 10);
      player2.color = "#FF0000";
      player2.draw();
      
@@ -90,14 +90,14 @@ function jumpPlayer() //прыжок
 
 function gravity() //якобы гравитация ))
 {
-	if (player.y < 280 ) //пока находится в воздухе
+	if (player.y < (canvasHeight-20) ) //пока находится в воздухе
 		{
 			player.myContext.clearRect(player.x, player.y, 10, 10);
 			player.y += 10;
 			
 			doSend(player.x +','+ player.y);
 		}
-	else if(player.y > 280 ) //если ниже уровня земли
+	else if(player.y > (canvasHeight-20) ) //если ниже уровня земли
 		{
 			player.myContext.clearRect(player.x, player.y, 10, 10);
 			player.y = 280;
