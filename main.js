@@ -1,24 +1,17 @@
-//прописываем необходимые переменные
 var context;
 var drawingCanvas;
 
-//Ширина и высота холста
-var canvasHeight = 300;
 var canvasWidth = 450;
-
+var canvasHeight = 300;
 
 window.onload = function() {
 	
-	//устанавливаем нужные размеры холста
-	document.getElementById("game").setAttribute("height",canvasHeight);
-	document.getElementById("game").setAttribute("width",canvasWidth);
 	
-	//слушаем нажатие клавиш
-	window.addEventListener('keydown',doKeyDown,true); 
-	window.addEventListener('keyup',doKeyUp,true); 
+	window.addEventListener('keydown',doKeyDown,true); //слушаем нажатие клавиш
+	window.addEventListener('keyup',doKeyUp,true); //слушаем нажатие клавиш
 
 	
-	drawingCanvas = document.getElementById('game');
+	drawingCanvas = document.getElementById('smile');
 	context = drawingCanvas.getContext('2d');
 	
      // Рисуем землю
@@ -43,7 +36,7 @@ window.onload = function() {
     	
 }
 
-function user(x, y, width, height) //прототип игрока
+function user(x, y, width, height)
 {
 	this.myContext = context;
 	this.x = x;
@@ -64,15 +57,14 @@ function movePlayer(z) //передвижение игрока
 {
 	context.clearRect(player.x, player.y, 10, 10);
 	
-	if( (player.x + z) < canvasWidth && (player.x + z) > 0 ) //проверка на выход за границы
+	if( (player.x + z) < canvasWidth && (player.x + z) > 0 )
 	{
 		player.x = player.x + z;
 	}
 	
 	doSend(player.x +','+ player.y); //отправляем координаты через функцию файла wsclient.js
 }
-
-function movePlayer2(x,y) //движение второго игрока
+function movePlayer2(x,y)
 {
 	context.clearRect(player2.x, player2.y, 10, 10);
 	player2.x = x;
@@ -80,7 +72,7 @@ function movePlayer2(x,y) //движение второго игрока
 }
 	
 
-function jumpPlayer() //прыжок
+function jumpPlayer()
 {
 	context.clearRect(player.x, player.y, 10, 10);
 	player.y -= 80;
@@ -88,7 +80,7 @@ function jumpPlayer() //прыжок
 	doSend(player.x +','+ player.y); 
 }
 
-function gravity() //якобы гравитация ))
+function gravity()
 {
 	if (player.y < 280 ) //пока находится в воздухе
 		{
@@ -106,7 +98,7 @@ function gravity() //якобы гравитация ))
 		}
 }
 
-var forwardId; //id для интервалов ходьбы вперед и назад (чтобы не суммировалась скорость)
+var forwardId; //id для интервалов ходьбы вперед и назад (чтобы не стакалось)
 var backId;
 
 function doKeyDown(event) //при нажатии клавиш управления
@@ -115,14 +107,14 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 		{
 			if( forwardId == null )
 				{
-					forwardId = setInterval(function(){movePlayer(5);}, 30 ); //идем пока клавиша нажата
+					forwardId = setInterval(function(){movePlayer(5);}, 30 );
 				}
 		}
 	else if( event.keyCode == 65) //назад
 		{
 			if( backId == null)
 				{
-					backId = setInterval(function(){movePlayer(-5);}, 30 ); //идем пока клавиша нажата
+					backId = setInterval(function(){movePlayer(-5);}, 30 );
 				}
 		}
 	else if( event.keyCode == 87) //прыжок
