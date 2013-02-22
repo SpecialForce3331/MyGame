@@ -1,30 +1,10 @@
-function getLogin()
-{
-	$.ajax({								
-		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
-		async : false,
-		data : {
-			'action' : 'checkSession'
-		},
-		dataType : "jsonp",
-		success : function(data) {
-			if(data.result == 1)
-			{
-				document.getElementById("login").value = data.result;
-			}
-		}
-	})
-}
-
 function createChar()
 {
-	var i;
-	
-	for ( i = 0; i < 4; i++ )
+	for (var i = 0; i < 4; i++ )
 	{
 		if( document.getElementById("choice").children[i].selected == true )
 			{
-				var id = i;
+				var id = document.getElementById("choice").children[i].value;
 				
 				$.ajax({								
 					url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
@@ -32,18 +12,16 @@ function createChar()
 					data : {
 						'action' : 'newChar',
 						'login' : document.getElementById("login").value,
-						'name' : document.getElementById("name").value,
-						'role' : id
+						'name' : document.getElementById("name").value
 					},
-					dataType : "jsonp",
+					dataType : "json",
 					success : function(data) {
 						if(data.result == 1)
 						{
-							document.location="/MyGame/main.html";
+							document.location="/MyGame/newChar.php";
 						}
 					}
 				})
-				break;
 			}
 	}
 }

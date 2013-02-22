@@ -1,3 +1,13 @@
+<?php
+
+	session_start();
+	
+	if(is_null($_SESSION["login"]))
+	{
+		echo "<script>document.location='index.html'</script>";
+	}
+
+?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -9,8 +19,8 @@
 	<script type="text/javascript" src="newChar.js"></script>
 
 </head>
-<body onload="getLogin();">
-	<input id="login" type="text" disabled >" />
+<body>
+	<input id="login" type="text" disabled value="<?php echo $_SESSION["login"] ?>" />
 	<div align="center" style="bottom-top:10%;">
 	
 	<p>Вы можете иметь не более 3-х персонажей</p><br/>
