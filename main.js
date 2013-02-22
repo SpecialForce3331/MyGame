@@ -12,26 +12,24 @@ window.onload = function() {
 	context = drawingCanvas.getContext('2d');
 	
      // Рисуем землю
-     context.moveTo(0.5,590);
-     context.lineTo(890,590);
+     context.moveTo(0.5,290);
+     context.lineTo(250,290);
      context.strokeStyle = "#000";
      context.stroke();
      
      //рисуем игрока 
-     player = new user(1, 560, 10, 10);
+     player = new user(10, 280, 10, 10);
      player.color = "#000000";
      player.draw();
      
      //рисуем второго игрока
-     player2 = new user(100, 560, 10, 10);
+     player2 = new user(100, 280, 10, 10);
      player2.color = "#FF0000";
      player2.draw();
      
-     	setInterval(function(){player.draw();}, 1000/60); //отрисовываем игрока с частотой 60 fps
-    	//setInterval(function(){player.gravity()}, 100 );
-    	
-    	setInterval(function(){player2.draw();}, 1000/60); //отрисовываем игрока с частотой 60 fps
-    	//setInterval(function(){player2.gravity()}, 100 );
+     	setInterval(function(){player.draw();}, 1/40 * 1000); //отрисовываем игрока с частотой 60 fps
+    	setInterval(function(){player2.draw();}, 1/40 * 1000); //отрисовываем игрока с частотой 60 fps
+    	setInterval(function(){gravity();}, 30 ); //гравитация
     	
 }
 
@@ -52,40 +50,38 @@ function user(x, y, width, height)
 }
 
 
-function movePlayer(y, z) //передвижение игрока
+function movePlayer(y) //передвижение игрока
 {
-	context.clearRect(player.x + z, player.y, 10, 10);
+	context.clearRect(player.x, player.y, 10, 10);
 	player.x = player.x + y;
+	doSend(player.x +','+ player.y)
 }
+function movePlayer2(x,y)
+{
+	context.clearRect(player2.x, player2.y, 10, 10);
+	player2.x = x;
+	player2.y = y;
+}
+	
 
 function jumpPlayer()
 {
-	var i = 10;
-	while( i > 0)
-	{	
-		context.clearRect(player.x, player.y, 10, 10);
-		player.y -= i;
-		i--;
-	}
-		
-	gravity();
+	context.clearRect(player.x, player.y, 10, 10);
+	player.y -= 80;
 }
 
 function gravity()
 {
-	var i = 1;
-	while( player.y < 580 )
-	{
-		player.myContext.clearRect(player.x, player.y, 10, 10);
-		player.y += i;
-		i++;
-		player.draw();
-		if (player.y > 580)
+	if (player.y < 280 ) //пока находится в воздухе
 		{
-			player.y = 580;
-			break;
+			player.myContext.clearRect(player.x, player.y, 10, 10);
+			player.y += 10;
 		}
-	}
+	else if(player.y > 280 ) //если ниже уровня земли
+		{
+			player.myContext.clearRect(player.x, player.y, 10, 10);
+			player.y = 280;
+		}
 }
 
 var forwardId; //id для интервалов ходьбы вперед и назад (чтобы не стакалось)
@@ -95,23 +91,23 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 {
 	if(event.keyCode == 68) //вперед
 		{
-			if(forwardId == null )
+			if( forwardId == null )
 				{
-					forwardId = setInterval(function(){movePlayer(5, -1)}, 30 );
+					forwardId = setInterval(function(){movePlayer(5);}, 30 );
 				}
 		}
-	else if(event.keyCode == 65) //назад
+	else if( event.keyCode == 65) //назад
 		{
-			if(backId == null)
+			if( backId == null)
 				{
-					backId = setInterval(function(){movePlayer(-5, +1)}, 30 );
+					backId = setInterval(function(){movePlayer(-5);}, 30 );
 				}
 		}
-	else if(event.keyCode == 87) //прыжок
+	else if( event.keyCode == 87) //прыжок
 		{
 			jumpPlayer();
 		}
-	else if(event.keyCode == 83) //присед
+	else if( event.keyCode == 83) //присед
 		{
 			downPlayer();
 		}
@@ -127,17 +123,17 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 		}
 }
 
-function doKeyUp(event) //при отжатии клавиши вперед или назад
+function doKeyUp( event ) //при отжатии клавиши вперед или назад
 {
 
-	if(event.keyCode == 68) //вперед
+	if( event.keyCode == 68 ) //вперед
 	{
-		clearInterval(forwardId);
+		clearInterval( forwardId );
 		forwardId = null;
 	}
-	else if(event.keyCode == 65) //назад
+	else if( event.keyCode == 65 ) //назад
 	{
-		clearInterval(backId);
+		clearInterval( backId );
 		backId = null;
 	}
 

@@ -33,7 +33,7 @@ function testWebSocket()
 function onOpen(evt) 
 { 
 	writeToScreen("CONNECTED"); 
-	doSend("WebSocket rocks"); 
+	//doSend("player connected!"); 
 }  
 function onClose(evt) 
 {
@@ -41,7 +41,9 @@ function onClose(evt)
 }  
 function onMessage(evt) 
 {
-	writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>'); //websocket.close(); 
+	msg = evt.data.split(',');
+	writeToScreen('<span style="color: blue;">RESPONSE: ' + msg[0] + " " + msg[1] +'</span>'); //websocket.close();
+	movePlayer2(msg[0],msg[1]);
 }  
 function onError(evt) 
 {
