@@ -1,9 +1,6 @@
 var context;
 var drawingCanvas;
 
-var canvasWidth = 450;
-var canvasHeight = 300;
-
 window.onload = function() {
 	
 	
@@ -16,7 +13,7 @@ window.onload = function() {
 	
      // Рисуем землю
      context.moveTo(0.5,290);
-     context.lineTo(450,290);
+     context.lineTo(250,290);
      context.strokeStyle = "#000";
      context.stroke();
      
@@ -53,16 +50,11 @@ function user(x, y, width, height)
 }
 
 
-function movePlayer(z) //передвижение игрока
+function movePlayer(y) //передвижение игрока
 {
 	context.clearRect(player.x, player.y, 10, 10);
-	
-	if( (player.x + z) < canvasWidth && (player.x + z) > 0 )
-	{
-		player.x = player.x + z;
-	}
-	
-	doSend(player.x +','+ player.y); //отправляем координаты через функцию файла wsclient.js
+	player.x = player.x + y;
+	doSend(player.x +','+ player.y);
 }
 function movePlayer2(x,y)
 {
@@ -76,8 +68,7 @@ function jumpPlayer()
 {
 	context.clearRect(player.x, player.y, 10, 10);
 	player.y -= 80;
-	
-	doSend(player.x +','+ player.y); 
+	doSend(player.x +','+ player.y);
 }
 
 function gravity()
@@ -86,14 +77,12 @@ function gravity()
 		{
 			player.myContext.clearRect(player.x, player.y, 10, 10);
 			player.y += 10;
-			
 			doSend(player.x +','+ player.y);
 		}
 	else if(player.y > 280 ) //если ниже уровня земли
 		{
 			player.myContext.clearRect(player.x, player.y, 10, 10);
 			player.y = 280;
-			
 			doSend(player.x +','+ player.y);
 		}
 }
