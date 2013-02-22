@@ -19,7 +19,7 @@ if(is_null($_SESSION["login"]))
 		
 	<div align="center" style="padding-top:10%;" id="output">
 		<div id="characters">Ваши персонажи</div><br/>
-		<button onclick="javascript:location='game/newChar.php';">Новый персонаж</button><br/>
+		<button onclick="newChar();">Новый персонаж</button><br/>
 		<button onclick="showGames();">Показать текущие игры</button><br/>
 		<button onclick="newGame();">Создать новую игру</button><br/>
 	</div>

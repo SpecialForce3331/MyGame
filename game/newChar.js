@@ -1,3 +1,8 @@
+function test()
+{
+	alert("test");
+}
+
 function createChar()
 {
 	for (var i = 0; i < 4; i++ )
@@ -7,18 +12,18 @@ function createChar()
 				var id = document.getElementById("choice").children[i].value;
 				
 				$.ajax({								
-					url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
+					url : '/MyGame/engine.php',
 					async : false,
 					data : {
 						'action' : 'newChar',
 						'login' : document.getElementById("login").value,
-						'name' : document.getElementById("name").value
+						'name' : document.getElementById("password").value
 					},
 					dataType : "json",
 					success : function(data) {
 						if(data.result == 1)
 						{
-							document.location="/MyGame/newChar.php";
+							document.location="/MyGame/main.php";
 						}
 					}
 				})

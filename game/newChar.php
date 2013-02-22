@@ -20,7 +20,6 @@
 
 </head>
 <body>
-	<input id="login" type="text" disabled value="<?php echo $_SESSION["login"] ?>" />
 	<div align="center" style="bottom-top:10%;">
 	
 	<p>Вы можете иметь не более 3-х персонажей</p><br/>
@@ -33,7 +32,7 @@
 				<option value='2'>Маг</option>
 				<option value='3'>Лучник</option>
 			</select><br/>
-			<button onclick="createChar();">Создать персонажа</button>
+			<button onlick="createChar()">Создать персонажа</button>
 	</div>
 </body>
 </html>
