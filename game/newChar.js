@@ -12,11 +12,7 @@ function getLogin()
 			{
 				document.getElementById("login").value = data.result;
 			}
-		},
-		error: function(data)
-			{
-				document.location="/MyGame/index.html";
-			}
+		}
 	})
 }
 
@@ -28,7 +24,7 @@ function createChar()
 	{
 		if( document.getElementById("choice").children[i].selected == true )
 			{
-				var id = i + 1; //добавляем единицу чтобы отсчет персонажей был с 1, а не с 0, мне так проще )
+				var id = i;
 				
 				$.ajax({								
 					url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
