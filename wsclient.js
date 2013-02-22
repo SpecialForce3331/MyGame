@@ -15,19 +15,19 @@ function testWebSocket()
 	websocket.onopen = function(evt) 
 	{ 
 		alert("open");
-		onOpen(evt);
+		onOpen(evt) 
 	}; 
 	websocket.onclose = function(evt) 
 	{ 
-		onClose(evt);
+		onClose(evt) 
 	}; 
 	websocket.onmessage = function(evt) 
 	{ 
-		onMessage(evt);
+		onMessage(evt) 
 	}; 
 	websocket.onerror = function(evt) 
 	{ 
-		onError(evt);
+		onError(evt) 
 	}; 
 }
 
