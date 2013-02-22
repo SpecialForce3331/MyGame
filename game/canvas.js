@@ -34,13 +34,13 @@ window.onload = function() {
      //рисуем игрока 
      player = new user(10, canvasHeight-20, 10, 10);
      player.role = 1;
-     player.role.color = "black";
+     player.role.color = "#000000";
      player.role.draw();
  
    //отрисовываем игроков с частотой 60 fps, 24 кадра в секунду
- 	setInterval(function(){player.1.draw()}, 2.5); 
-	setInterval(function(){player.2.draw()}, 2.5);
-	setInterval(function(){player.3.draw()}, 2.5); 
+ 	setInterval(function(){player.1.draw();}, 2.5); 
+	setInterval(function(){player.2.draw();}, 2.5);
+	setInterval(function(){player.3.draw();}, 2.5); 
    	
 }
 
