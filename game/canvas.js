@@ -4,7 +4,7 @@ var drawingCanvas;
 
 //Ширина и высота холста
 var canvasHeight = 260;
-var canvasWroleth = 450;
+var canvasWidth = 450;
 
 
 window.onload = function() {
@@ -16,11 +16,11 @@ window.onload = function() {
 	window.addEventListener('keyup',doKeyUp,true); 
 
 	//Записываем объект канваса в переменную
-	drawingCanvas = document.getElementByrole('game');
+	drawingCanvas = document.getElementById('game');
 	
 	//устанавливаем нужные размеры холста
 	drawingCanvas.setAttribute("height",canvasHeight);
-	drawingCanvas.setAttribute("wroleth",canvasWroleth);
+	drawingCanvas.setAttribute("width",canvasWidth);
 	
 	//почва для рисования
 	context = drawingCanvas.getContext('2d');
@@ -33,9 +33,9 @@ window.onload = function() {
      
      //рисуем игрока 
      player = new user(10, canvasHeight-20, 10, 10);
-     player.role = 1;
-     player.role.color = "#000000";
-     player.role.draw();
+     player.id = 1;
+     player.id.color = "#000000";
+     player.id.draw();
  
    //отрисовываем игроков с частотой 60 fps, 24 кадра в секунду
  	setInterval(function(){player.1.draw();}, 2.5); 
@@ -44,66 +44,66 @@ window.onload = function() {
    	
 }
 
-function user(x, y, wroleth, height) //прототип игрока
+function user(x, y, width, height) //прототип игрока
 {
-	this.role;
-	this.role.myContext = context;
-	this.role.x = x;
-	this.role.y = y;
-	this.role.wroleth = wroleth;
-	this.role.height = height;
-	this.role.color;
-	this.role.mass = 2;
-	this.role.draw = function( x,y )
+	this.id;
+	this.id.myContext = context;
+	this.id.x = x;
+	this.id.y = y;
+	this.id.width = width;
+	this.id.height = height;
+	this.id.color;
+	this.id.mass = 2;
+	this.id.draw = function( x,y )
 	{
-		this.role.myContext.fillStyle = this.color;
-		this.role.myContext.fillRect(this.role + "." + x, this.role + "." + y, this.role.wroleth, this.role.height);
+		this.id.myContext.fillStyle = this.color;
+		this.id.myContext.fillRect(this.id + "." + x, this.id + "." + y, this.id.width, this.id.height);
 	}
 }
 
 
-function movePlayer(role, direction) //передвижение игрока
+function movePlayer(id, direction) //передвижение игрока
 {
 
-	doSend("move" + "," + player + "." + role + "," + direction ); //отправляем координаты и role через функцию файла wsclient.js
+	doSend("move" + "," + player + "." + id + "," + direction ); //отправляем координаты и id через функцию файла wsclient.js
 }
 
-var forwardId; //role для интервалов ходьбы вперед и назад (чтобы не суммировалась скорость)
+var forwardId; //id для интервалов ходьбы вперед и назад (чтобы не суммировалась скорость)
 var backId;
 
 function doKeyDown(event) //при нажатии клавиш управления
 {
 	if(event.keyCode == 68) //вперед
 		{
-			if( forwardrole == null )
+			if( forwardId == null )
 				{
-					forwardId = setInterval(function(){movePlayer(player.role,"forward");}, 30 ); //идем пока клавиша нажата
+					forwardId = setInterval(function(){movePlayer(player.id,"forward");}, 30 ); //идем пока клавиша нажата
 				}
 		}
 	else if( event.keyCode == 65) //назад
 		{
 			if( backId == null)
 				{
-					backId = setInterval(function(){movePlayer(player.role,"back");}, 30 ); //идем пока клавиша нажата
+					backId = setInterval(function(){movePlayer(player.id,"back");}, 30 ); //идем пока клавиша нажата
 				}
 		}
 	else if( event.keyCode == 87) //прыжок
 		{
-			movePlayer(player.role,"jump");
+			movePlayer(player.id,"jump");
 		}
 	else if( event.keyCode == 83) //присед
 		{
-			movePlayer(player.role,"down");
+			movePlayer(player.id,"down");
 		}
 	else if( event.keyCode == 68 && event.keyCode == 87 ) //прыжок со смещением вперед
 		{
-			movePlayer(player.role,"jump");
-			movePlayer(player.role,"forward");
+			movePlayer(player.id,"jump");
+			movePlayer(player.id,"forward");
 		}
 	else if( event.keyCode == 65 && event.keyCode == 87 ) //прыжок со смещением назад
 		{
-			movePlayer(player.role,"jump");
-			movePlayer(player.role,"back");
+			movePlayer(player.id,"jump");
+			movePlayer(player.id,"back");
 		}
 }
 
@@ -113,29 +113,29 @@ function doKeyUp( event ) //при отжатии клавиши вперед и
 	if( event.keyCode == 68 ) //вперед
 	{
 		clearInterval( forwardId );
-		forwardrole = null;
+		forwardId = null;
 	}
 	else if( event.keyCode == 65 ) //назад
 	{
 		clearInterval( backId );
-		backrole = null;
+		backId = null;
 	}
 
 }
 
-function getUserData()
+function getId()
 {
 	$.ajax({								
 		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
 		async : false,
 		data : {
-			'action' : 'getUserData',
+			'action' : 'getId',
 		},
 		dataType : "jsonp",
 		success : function(data) {
 			if(data.result != "false")
 			{
-				player.role = data.result;
+				player.id = data.result;
 			}
 		}
 	})

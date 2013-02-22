@@ -42,10 +42,10 @@ function onClose(evt)
 function onMessage(evt) 
 {	
 	msg = evt.data.split(',');
-	writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>');
+	writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>'); //websocket.close();
 	
 	player + msg[0] + "." + myContext + "." + clearRect(); //стираем с экрана текущую позицию пользователя
-	player + msg[0] + "." + draw(); //отрисовываем новую
+	player + msg[0] + "." + draw() //отрисовываем новую
 	
 }  
 function onError(evt) 

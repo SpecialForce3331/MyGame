@@ -45,7 +45,7 @@ function getCharacters()
 				for( var i = 0; i < data.result.length; i++ ) //перебираем массив с персонажами
 				{	
 					var result = data.result[i].split(","); //разбиваем значения персонажа по запятым
-					$("#characters").append("<div style='display:inline-block; border:solid 1px black; width: 200px;' id="+ i +"><button onclick='choise("+ "\"" + result[0] + "\"" +")'>Выбрать</button></div> "); //выводим контейнеры для персонажей в одну строку				
+					$("#characters").append("<div style='display:inline-block; border:solid 1px black; width: 200px;' id="+ i +"><button onclick='choise("+ result[1] +")'>Выбрать</button></div> "); //выводим контейнеры для персонажей в одну строку				
 					
 					for ( var x = 0; x < result.length; x++ ) //перебираем значения персонажа
 					{
@@ -57,25 +57,12 @@ function getCharacters()
 	})
 }
 
-//выбор персонажа
-function choise(name)
+//установка роли при выборе персонажа
+var role;
+function choise(id)
 {
-
-	$.ajax({								
-		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
-		async : false,
-		data : {
-			'action' : 'choiseChar',
-			'name' : name
-		},
-		dataType : "jsonp",
-		success : function(data) {
-			if(data.result != "false")
-			{
-				alert(data.result);
-			}
-		}
-	})
+	role = id;
+	alert("Персонаж выбран");
 }
 
 function writeToScreen(message) 
@@ -105,7 +92,8 @@ function newGame()
 		data : {
 			'action' : 'newGame',
 			'title' : document.getElementById("title").value,
-			'password' : document.getElementById("password").value
+			'password' : document.getElementById("password").value,
+			'role' : role
 		},
 		dataType : "jsonp",
 		success : function(data) {
