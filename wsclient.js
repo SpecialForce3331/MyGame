@@ -42,7 +42,7 @@ function onClose(evt)
 function onMessage(evt) 
 {
 	msg = evt.data.split(',');
-	writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>'); //websocket.close();
+	writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " +  msg[1] + " " + msg[2] +'</span>'); //websocket.close();
 	movePlayer2(msg[1],msg[2]);
 }  
 function onError(evt) 
@@ -57,12 +57,7 @@ function writeToScreen(message)
 { 
 	var pre = document.createElement("p"); 
 	pre.style.wordWrap = "break-word"; 
-	pre.innerHTML = message;
-	
-	if(output.hasChildNodes() == true)
-	{
-		output.removeChild(output.childNodes[0]);
-	}
+	pre.innerHTML = message; 
 	output.appendChild(pre); 
 }
 
