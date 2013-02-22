@@ -6,7 +6,6 @@ window.onload = function()
 	output = document.getElementById("output");
 }
 
-
 function writeToScreen(message) 
 { 
 	var pre = document.createElement("p"); 
@@ -16,6 +15,10 @@ function writeToScreen(message)
 	output.appendChild(pre); 
 }
 
+function newGame()
+{
+	
+}
 
 function join()
 {
