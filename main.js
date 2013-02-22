@@ -1,4 +1,4 @@
-var myServer = "ws://427044.dyn.ufanet.ru:8080/GameServer/websocket";
+var myServer = "ws://427044.dyn.ufanet.ru:8080/ServerWS";
 var output;
 
 window.onload = function()

@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if(is_null($_SESSION["login"]))
+{
+	echo "<script>document.location='index.html'</script>";
+}
+?>
 <html>
 	<head>
 	<script type="text/javascript" src="jquery-1.8.3.js"></script>

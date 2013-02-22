@@ -12,7 +12,7 @@ function auth()
 		success : function(data) {
 			if( data.result == 1 )
 			{
-				document.location="main.html";
+				alert("sucess");
 			}
 		},
 		error : function(data){alert("error");}
@@ -30,12 +30,9 @@ function reg()
 			'password' : document.getElementById("password").value
 		},
 		dataType : "jsonp",
-		success : function(data) 
-		{
-			if ( data.result != "false")
-			{
-				document.location="main.html";
-			}
+		success : function(data) {
+			alert(data.result);
+			document.location="main.php";
 		}
 	})
 }
