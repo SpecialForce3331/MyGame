@@ -74,6 +74,7 @@ function choise(name)
 			{
 				alert(data.result);
 				myChoise = name;
+				alert( name );
 			}
 		}
 	})
@@ -100,32 +101,24 @@ function showCreateGame()
 
 function newGame()
 {
-	if ( myChoise == undefined )
-		{
-			alert("Сначала выберите или создайте персонажа ");
+	$.ajax({								
+		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
+		async : false,
+		data : {
+			'action' : 'newGame',
+			'title' : document.getElementById("title").value,
+			'password' : document.getElementById("password").value
+		},
+		dataType : "jsonp",
+		success : function(data) {
+			if(data.result != "false")
+			{
+				document.getElementById("login").value = data.result;
+			}
 		}
-	else
-		{
-			$.ajax({								
-				url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
-				async : false,
-				data : {
-					'action' : 'newGame',
-					'title' : document.getElementById("title").value,
-					'password' : document.getElementById("password").value
-				},
-				dataType : "jsonp",
-				success : function(data) {
-					if(data.result != "false")
-					{
-						document.getElementById("login").value = data.result;
-					}
-				}
-			})
-			
-			$("#createGame").empty();
-		}
-			
+	})
+	
+	$("#createGame").empty();
 }
 
 function showGames()
@@ -157,27 +150,19 @@ function showGames()
 
 function join(id)
 {
-	if ( myChoise == undefined )
-		{
-			alert("Сначала выберите или создайте персонажа ");
+	$.ajax({								
+		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
+		async : false,
+		data : {
+			'action' : 'join',
+			'id' : id
+		},
+		dataType : "jsonp",
+		success : function(data) {
+			if(data.result != "false")
+			{
+				document.location="game/game.html?id="+id + "$" + document.getElementById("login").innerHTML + "$" + myChoise;
+			}
 		}
-	else
-		{
-			$.ajax({								
-				url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
-				async : false,
-				data : {
-					'action' : 'join',
-					'id' : id
-				},
-				dataType : "jsonp",
-				success : function(data) {
-					if(data.result != "false")
-					{
-						document.location="game/game.html?id="+id + "$" + document.getElementById("login").innerHTML + "$" + myChoise;
-					}
-				}
-			})
-		}
-	
+	})
 }
