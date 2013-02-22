@@ -24,15 +24,15 @@
 		$_GET['login'] = strip_tags($_GET['login']);
 		$_GET['password'] = strip_tags($_GET['password']); //Убираем теги из логина и пароля ( XSS ).
 		
-		$result = $mysqli->query("SELECT `login` FROM `users` WHERE `login` = '".$_GET['login']."' AND `password` = '".md5($_GET['password'])."'" );
+		$result = $mysqli->query("SELECT `login` WHERE `login` = '".$_GET['login']."' AND `password` = '".md5($_GET['password'])."'" );
 		if ($mysqli->connect_errno)
 		{
 			echo "Failed to connect to MySQL: (" . $mysqli->connect_errno . ") " . $mysqli->connect_error;
 				
 		}else{
 			$rows = $result->num_rows;
-			//$userData = $result->fetch_array(MYSQLI_ASSOC);
-			$answer = array( "result" => $rows);
+			$userData = $result->fetch_array(MYSQLI_ASSOC);
+			$answer = array( "result" => $rows , "userData" => $userData);
 			echo json_encode( $answer ); //Отдаем данные в формате json
 			if( $rows == 1 )
 			{

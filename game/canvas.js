@@ -50,12 +50,12 @@ window.onload = function() {
      player3.draw();
      
    //отрисовываем игроков с частотой 60 fps, 24 кадра в секунду
- 	setInterval(function(){player.draw();}, 2.5); 
-	setInterval(function(){player2.draw();}, 2.5);
-	setInterval(function(){player3.draw();}, 2.5); 
+     	setInterval(function(){player.draw();}, 2.5); 
+    	setInterval(function(){player2.draw();}, 2.5);
+    	setInterval(function(){player3.draw();}, 2.5); 
     	
-	//гравитация
-	setInterval(function(){gravity();}, 30 ); 
+    	//гравитация
+    	setInterval(function(){gravity();}, 30 ); 
     	
 }
 

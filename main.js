@@ -1,25 +1,28 @@
-
+//Как только страница прогружена, отображаем поля для авторизации.
 window.onload = function()
 {
-	$("#output").empty();
-	$("#output").append("<select id='choice'>" +
-			"<option value='1'>Рыцарь</option>" +
-			"<option value='2'>Маг</option>" +
-			"<option value='3'>Лучник</option>" +
-			"</select>" +
-			"<button onclick='join();'>Присоединиться к игре</button>");
-}
+	var inputWindow = " Login:<br/><input type='text' id='login' /><br/>" +
+			"Password:<br/><input type='password' id='password' /><br/>" +
+			"<button onclick='auth();'>Авторизиация</button><br/>" +
+			"<button onclick='reg();'>Регистрация</button><br/>"
+	$("#mainWidow").empty()
+	$("#mainWindow").append(inputWindow);
 
-function join()
+}
+function auth()
 {
-	for (var i = 0; i < 4; i ++ )
-		{
-			if( document.getElementById("choice").children[i].selected == true )
-				{
-					//alert(document.getElementById("choice").children[i].value);
-					myWebSocket();
-					
-					break;
-				}
+	$.ajax({								
+		url : 'engine.php',
+		async : false,
+		data : {
+			'action' : 'auth',
+			'login' : login,
+			'password' : password
+		},
+		dataType : "json",
+		success : function(data) {
+			alert(data.result);
+			document.location="/main.php";
 		}
+	})
 }
