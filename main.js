@@ -150,5 +150,19 @@ function showGames()
 
 function join(id)
 {
-	document.location="game/game.html?id="+id + "$" + document.getElementById("login").innerHTML + "$" + myChoise;
+	$.ajax({								
+		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
+		async : false,
+		data : {
+			'action' : 'join',
+			'id' : id
+		},
+		dataType : "jsonp",
+		success : function(data) {
+			if(data.result != "false")
+			{
+				document.location="game/game.html?id="+id + "$" + document.getElementById("login").innerHTML + "$" + myChoise;
+			}
+		}
+	})
 }
