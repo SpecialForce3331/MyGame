@@ -19,7 +19,7 @@ function checkSession()
 		success : function(data) {
 			if(typeof(data.result) != undefined)
 			{
-				document.getElementById("login").value = data.result;
+				document.getElementById("login").innerHTML = data.result;
 				getCharacters();
 			}
 		},
@@ -134,11 +134,11 @@ function showGames()
 				for( var i = 0; i < data.result.length; i++ ) //перебираем массив с персонажами
 				{	
 					var result = data.result[i].split(","); //разбиваем значения игры по запятым
-					$("#games").append("<div style='border:solid 1px black; width: 200px;' id=" + "game" + i +"><button onclick='join()'>Присоединиться</button></div><br/> "); //выводим контейнеры для игр в столбец			
+					$("#games").append("<div style='border:solid 1px black; width: 200px;' id=" + "game" + i +"><button onclick='join(document.getElementById(" + '"' + 'game' + i + '"' +  ").childNodes.item(1).innerHTML)'>Присоединиться</button></div><br/> "); //выводим контейнеры для игр в столбец			
 					
 					for ( var x = 0; x < result.length; x++ ) //перебираем значения персонажа
 					{
-						$("#game"+ i ).append("<div style='display:inline-block;'>" + result[x] + "</div>");//выводим значения игр в строку
+						$("#game"+ i ).append("<div style='display:inline-block;'>" + result[x] + "</div> ");//выводим значения игр в строку
 					}
 				}
 			}
@@ -146,61 +146,7 @@ function showGames()
 	})
 }
 
-function join()
+function join(id)
 {
-	for (var i = 0; i < 4; i ++ )
-		{
-			if( document.getElementById("choice").children[i].selected == true )
-				{
-					var id = document.getElementById("choice").children[i].value;
-					
-					websocket = new WebSocket(myServer);
-					websocket.onopen = function(evt)
-					{
-						writeToScreen("connected");
-						websocket.send( "login" + "," + document.getElementById("login").value );
-					}
-					websocket.onclose = writeToScreen("disconnected");
-					
-					break;
-				}
-		}
-}
-
-function create()
-{
-	for (var i = 0; i < 4; i++ )
-	{
-		if( document.getElementById("choice").children[i].selected == true )
-			{
-				var id = document.getElementById("choice").children[i].value;
-				
-				websocket = new WebSocket(myServer);
-				websocket.onopen = function()
-				{
-					writeToScreen("connected");
-					writeToScreen("SEND: " + "login" + "," + document.getElementById("login").value );
-					websocket.send( "login" + "," + document.getElementById("login").value );
-				}
-				
-				websocket.onmessage = function(evt)
-				{
-					writeToScreen("ANSWER: " + evt.data);
-				}
-				websocket.onclose = function()
-				{
-					writeToScreen("disconnected");
-				}
-				
-				break;
-			}
-	}
-	
-}
-
-function send()
-{
-	websocket.send( "toPlayer" + "," + document.getElementById("toPlayer").value + "," + document.getElementById("msg").value );
-	writeToScreen("SEND: " + "toPlayer" + "," + document.getElementById("toPlayer").value + "," + document.getElementById("msg").value );
-
+	document.location="game/game.html?id="+id + "$" + document.getElementById("login").innerHTML;
 }
