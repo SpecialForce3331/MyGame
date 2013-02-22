@@ -4,7 +4,7 @@ var drawingCanvas;
 
 //Ширина и высота холста
 var canvasHeight = 260;
-var canvasWidth = 450;
+var canvasWroleth = 450;
 
 
 window.onload = function() {
@@ -20,7 +20,7 @@ window.onload = function() {
 	
 	//устанавливаем нужные размеры холста
 	drawingCanvas.setAttribute("height",canvasHeight);
-	drawingCanvas.setAttribute("width",canvasWidth);
+	drawingCanvas.setAttribute("wroleth",canvasWroleth);
 	
 	//почва для рисования
 	context = drawingCanvas.getContext('2d');
@@ -44,20 +44,20 @@ window.onload = function() {
    	
 }
 
-function user(x, y, width, height) //прототип игрока
+function user(x, y, wroleth, height) //прототип игрока
 {
 	this.role;
 	this.role.myContext = context;
 	this.role.x = x;
 	this.role.y = y;
-	this.role.width = width;
+	this.role.wroleth = wroleth;
 	this.role.height = height;
 	this.role.color;
 	this.role.mass = 2;
 	this.role.draw = function( x,y )
 	{
 		this.role.myContext.fillStyle = this.color;
-		this.role.myContext.fillRect(this.role + "." + x, this.role + "." + y, this.role.width, this.role.height);
+		this.role.myContext.fillRect(this.role + "." + x, this.role + "." + y, this.role.wroleth, this.role.height);
 	}
 }
 
