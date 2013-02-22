@@ -58,9 +58,9 @@ function getCharacters()
 }
 
 //выбор персонажа
+var myChoise;
 function choise(name)
 {
-
 	$.ajax({								
 		url : 'http://427044.dyn.ufanet.ru:8080/GameServer/mysql',
 		async : false,
@@ -73,6 +73,8 @@ function choise(name)
 			if(data.result != "false")
 			{
 				alert(data.result);
+				myChoise = name;
+				alert( name );
 			}
 		}
 	})
@@ -148,5 +150,5 @@ function showGames()
 
 function join(id)
 {
-	document.location="game/game.html?id="+id + "$" + document.getElementById("login").innerHTML;
+	document.location="game/game.html?id="+id + "$" + document.getElementById("login").innerHTML + "$" + myChoise;
 }
