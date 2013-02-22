@@ -3,26 +3,22 @@ var context;
 var drawingCanvas;
 
 //Ширина и высота холста
-var canvasHeight = 260;
+var canvasHeight = 300;
 var canvasWidth = 450;
 
 
 window.onload = function() {
 	
 	//устанавливаем нужные размеры холста
+	document.getElementById("game").setAttribute("height",canvasHeight);
+	document.getElementById("game").setAttribute("width",canvasWidth);
 	
 	//слушаем нажатие клавиш
 	window.addEventListener('keydown',doKeyDown,true); 
 	window.addEventListener('keyup',doKeyUp,true); 
 
-	//Записываем объект канваса в переменную
+	
 	drawingCanvas = document.getElementById('game');
-	
-	//устанавливаем нужные размеры холста
-	drawingCanvas.setAttribute("height",canvasHeight);
-	drawingCanvas.setAttribute("width",canvasWidth);
-	
-	//почва для рисования
 	context = drawingCanvas.getContext('2d');
 	
      // Рисуем землю
