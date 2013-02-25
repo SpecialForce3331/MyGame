@@ -40,6 +40,8 @@ window.onload = function() {
  	setInterval(function(){player.draw();}, 2.5); 
 	//setInterval(function(){player.2.draw()}, 2.5);
 	//setInterval(function(){player.3.draw()}, 2.5); 
+ 	
+ 	setInterval(function(){gravity()}, 2.5);
    	
 }
 
@@ -78,6 +80,15 @@ function movePlayer(number, direction) //передвижение игрока
 	else if (direction == "jump" )
 		{
 			player.y = player.y - 20;
+		}
+}
+
+function gravity()
+{
+	if ( player.y < (canvasHeight - 20) )
+		{
+			player.myContext.clearRect(player.x, player.y, player.width, player.height);
+			player.y = player.y + 2;
 		}
 }
 
