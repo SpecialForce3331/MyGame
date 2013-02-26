@@ -41,7 +41,7 @@ window.onload = function() {
 	//setInterval(function(){player.2.draw()}, 2.5);
 	//setInterval(function(){player.3.draw()}, 2.5); 
  	
- 	setInterval(function(){gravity()}, 2.5);
+ 	setInterval(function(){gravity();}, 6);
    	
 }
 
@@ -77,9 +77,12 @@ function movePlayer(number, direction) //передвижение игрока
 		{
 			player.x = player.x - 2;
 		}
-	else if (direction == "jump" )
+	else if ( direction == "jump" )
 		{
-			player.y = player.y - 20;
+			if ( player.y = ( canvasHeight - 20 ))
+			{
+				player.y = player.y - 80;
+			}
 		}
 }
 
