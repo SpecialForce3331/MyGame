@@ -100,6 +100,7 @@ function movePlayer(number, direction) //передвижение игрока
 
 function moveOthers(role, x, y)
 {
+	
 	if ( player.role == role )
 		{
 			/*
@@ -110,12 +111,30 @@ function moveOthers(role, x, y)
 		}
 	else if ( player2.role == role )
 		{
+			player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
 			player2.myContext.clearRect(player2.x, player2.y, player2.width, player2.height);
 			player2.x = x;
 			player2.y = y;
 		}
-	else
+	else if ( player3.role == role )
 		{
+			player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
+			player3.myContext.clearRect(player3.x, player3.y, player3.width, player3.height);
+			player3.x = x;
+			player3.y = y;
+		}
+	else if ( player2.role == "" )
+		{
+			player2.role = role;
+			player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
+			player2.myContext.clearRect(player2.x, player2.y, player2.width, player2.height);
+			player2.x = x;
+			player2.y = y;
+		}
+	else if ( player3.role == "" )
+		{
+			player3.role = role;
+			player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
 			player3.myContext.clearRect(player3.x, player3.y, player3.width, player3.height);
 			player3.x = x;
 			player3.y = y;
