@@ -67,14 +67,14 @@ function onMessage(evt)
 
 	if ( msg[0] == "id" )
 		{
-			writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>');
+			//writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>');
 		}
 	else if( msg[0] == "move")
 		{
 			moveOthers(msg[1], msg[2], msg[3]);
-			writeToScreen('<span style="color: blue;">RESPONSE: ' +  msg[1] + "," + msg[2] + "," + msg[3] + '</span>');
+			//writeToScreen('<span style="color: blue;">RESPONSE: ' +  msg[1] + "," + msg[2] + "," + msg[3] + '</span>');
 		}
-	else
+	else if(msg[0] == "chat")
 		{
 			writeToScreen('<span style="color: blue;">RESPONSE: ' +  evt.data + '</span>');
 		}
@@ -86,7 +86,8 @@ function onError(evt)
 }  
 function doSend(message) 
 { 
-	writeToScreen("SENT: " + message);  websocket.send(message); 
+	//writeToScreen("SENT: " + message);  
+	websocket.send(message); 
 }  
 function writeToScreen(message) 
 { 
@@ -94,10 +95,12 @@ function writeToScreen(message)
 	pre.style.wordWrap = "break-word"; 
 	pre.innerHTML = message;
 	
+	/*
 	if(output.hasChildNodes() == true)
 	{
 		output.removeChild(output.childNodes[0]);
 	}
+	*/
 	output.appendChild(pre); 
 }
 
