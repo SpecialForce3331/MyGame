@@ -59,6 +59,10 @@ function user(x, y, width, height) //прототип игрока
 {
 	this.myContext = context;
 	this.role = "";
+	this.login;
+	this.name;
+	this.lvl;
+	this.exp;
 	this.x = x;
 	this.y = y;
 	this.width = width;
@@ -74,7 +78,7 @@ function user(x, y, width, height) //прототип игрока
 }	
 
 
-function movePlayer(number, direction) //передвижение игрока
+function movePlayer(role, direction) //передвижение игрока
 {	
 	player.myContext.clearRect(player.x, player.y, player.width, player.height);
 	player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
@@ -82,58 +86,59 @@ function movePlayer(number, direction) //передвижение игрока
 	if ( direction == "forward" )
 		{
 			player.x = player.x + 2;
+			doSend("move" + "," +  "forward");
 		}
 	else if ( direction == "back" )
 		{
 			player.x = player.x - 2;
+			doSend("move" + "," +  "back");
 		}
 	else if ( direction == "jump" )
 		{
-			if ( player.y = ( canvasHeight - 20 ))
+			if ( player.y == ( canvasHeight - 20 ))
 			{
 				player.y = player.y - 80;
+				doSend("move" + "," +  "jump");
 			}
 		}
 	
-	doSend("toMembersOfGame" + "," + "move" + "," +  number + "," + player.x + "," + player.y ); //отправляем координаты через функцию файла wsclient.js
+	//doSend("move" + "," +  role + "," + player.x + "," + player.y ); //отправляем координаты через функцию файла wsclient.js
 }
 
-function moveOthers(role, x, y)
+function movePlayers(login, x, y) //функция отвечающая за передвижение других игроков
 {
-	
-	if ( player.role == role )
+	if ( player.login == login )
 		{
-			/*
 			player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
 			player.myContext.clearRect(player.x, player.y, player.width, player.height);
 			player.x = x;
-			player.y = y;*/
+			player.y = y;
 		}
-	else if ( player2.role == role )
+	else if ( player2.login == login )
 		{
 			player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
 			player2.myContext.clearRect(player2.x, player2.y, player2.width, player2.height);
 			player2.x = x;
 			player2.y = y;
 		}
-	else if ( player3.role == role )
+	else if ( player3.login == login )
 		{
 			player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
 			player3.myContext.clearRect(player3.x, player3.y, player3.width, player3.height);
 			player3.x = x;
 			player3.y = y;
 		}
-	else if ( player2.role == "" )
+	else if ( player2.login == "" )
 		{
-			player2.role = role;
+			player2.login = login;
 			player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
 			player2.myContext.clearRect(player2.x, player2.y, player2.width, player2.height);
 			player2.x = x;
 			player2.y = y;
 		}
-	else if ( player3.role == "" )
+	else if ( player3.login == "" )
 		{
-			player3.role = role;
+			player3.login = login;
 			player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
 			player3.myContext.clearRect(player3.x, player3.y, player3.width, player3.height);
 			player3.x = x;
@@ -149,7 +154,7 @@ function gravity()
 			player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
 			player.y = player.y + 2;
 			
-			doSend("toMembersOfGame" + "," + "move" + "," +  player.role + "," + player.x + "," + player.y ); //отправляем координаты через функцию файла wsclient.js
+			//doSend("toMembersOfGame" + "," + "move" + "," +  player.role + "," + player.x + "," + player.y ); //отправляем координаты через функцию файла wsclient.js
 		}
 }
 
@@ -178,7 +183,7 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 		}
 	else if( event.keyCode == 83) //присед
 		{
-			movePlayer(player.role,"down");
+			//movePlayer(player.role,"down");
 		}
 	else if( event.keyCode == 68 && event.keyCode == 87 ) //прыжок со смещением вперед
 		{
@@ -220,7 +225,13 @@ function getUserData()
 		success : function(data) {
 			if(data.result != "false")
 			{
-				player.role = data.result;
+				player.role = data.result[0];
+				player.login = data.result[1];
+				player.name = data.result[2];
+				player.lvl = data.result[3];
+				player.exp = data.result[4];
+				
+				$("#character").append("<p>" + player.name + "</p>");
 			}
 		}
 	})

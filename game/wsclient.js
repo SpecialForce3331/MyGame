@@ -61,6 +61,7 @@ function onClose(evt)
 	})
 	writeToScreen("DISCONNECTED"); 
 }  
+
 function onMessage(evt) 
 {		
 	msg = evt.data.split(',');
@@ -71,24 +72,32 @@ function onMessage(evt)
 		}
 	else if( msg[0] == "move")
 		{
-			moveOthers(msg[1], msg[2], msg[3]);
-			//writeToScreen('<span style="color: blue;">RESPONSE: ' +  msg[1] + "," + msg[2] + "," + msg[3] + '</span>');
+			movePlayers(msg[1], msg[2], msg[3]);
+			alert("answer gived");
+			writeToScreen('<span style="color: blue;">RESPONSE: ' +  msg[1] + "," + msg[2] + "," + msg[3] + '</span>');
 		}
 	else if(msg[0] == "chat")
 		{
 			writeToScreen('<span style="color: blue;">RESPONSE: ' +  evt.data + '</span>');
 		}
+	else
+		{
+			writeToScreen(msg[0]);
+		}
 	
-}  
+}
+
 function onError(evt) 
 {
 	writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data); 
-}  
+}
+
 function doSend(message) 
 { 
 	//writeToScreen("SENT: " + message);  
 	websocket.send(message); 
-}  
+} 
+
 function writeToScreen(message) 
 { 
 	var pre = document.createElement("p"); 
