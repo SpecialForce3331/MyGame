@@ -38,17 +38,32 @@ window.onload = function() {
      player.draw();
      
      player2 = new user(30, canvasHeight-20, 10, 10, 2);
-     player2.color = "blue";
-     player2.draw();
-     
      player3 = new user(50, canvasHeight-20, 10, 10, 3);
-     player3.color = "red";
-     player3.draw();
+     
+     function drawPlayers(login) //при подключении нового игрока вызывается эта функция
+     {
+    	 var i = 1;
+		 if( i == 1 )
+			 { 
+			     player2.color = "blue";
+			     player2.login = login;
+			     player2.draw();
+			     setInterval(function(){player2.draw()}, 2.5);
+			     i++;
+			 }
+		 else
+			 { 
+			     player3.color = "red";
+			     player3.login = login;
+			     setInterval(function(){player3.draw()}, 2.5);
+			     player3.draw();
+			 } 
+     }
  
    //отрисовываем игроков с частотой 60 fps, 24 кадра в секунду
  	setInterval(function(){player.draw();}, 2.5); 
-	setInterval(function(){player2.draw()}, 2.5);
-	setInterval(function(){player3.draw()}, 2.5); 
+	//setInterval(function(){player2.draw()}, 2.5);
+	//setInterval(function(){player3.draw()}, 2.5); 
  	
  	setInterval(function(){gravity();}, 6);
    	
@@ -59,7 +74,7 @@ function user(x, y, width, height) //прототип игрока
 {
 	this.myContext = context;
 	this.role = "";
-	this.login;
+	this.login = "";
 	this.name;
 	this.lvl;
 	this.exp;
@@ -72,16 +87,16 @@ function user(x, y, width, height) //прототип игрока
 	this.draw = function( x,y )
 	{
 		this.myContext.fillStyle = this.color;
-		this.myContext.fillText(this.role, this.x + 2, this.y);
+		//this.myContext.fillText(this.name, this.x - 1, this.y);
 		this.myContext.fillRect(this.x, this.y, this.width, this.height);
 	}
 }	
 
 
-function movePlayer(role, direction) //передвижение игрока
+function movePlayer(direction) //передвижение игрока
 {	
+	//player.myContext.clearRect(player.x, player.y - 10, player.width + 10, player.height + 10); //очищаем область где отображается ник
 	player.myContext.clearRect(player.x, player.y, player.width, player.height);
-	player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
 	
 	if ( direction == "forward" )
 		{
@@ -101,48 +116,54 @@ function movePlayer(role, direction) //передвижение игрока
 				doSend("move" + "," +  "jump");
 			}
 		}
-	
-	//doSend("move" + "," +  role + "," + player.x + "," + player.y ); //отправляем координаты через функцию файла wsclient.js
 }
 
 function movePlayers(login, x, y) //функция отвечающая за передвижение других игроков
 {
 	if ( player.login == login )
 		{
-			player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
-			player.myContext.clearRect(player.x, player.y, player.width, player.height);
-			player.x = x;
-			player.y = y;
+			if( player.x != x || player.y != y ) //если координаты игрока отличаются от тех что на сервере, то правим
+				{
+					//player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
+					player.myContext.clearRect(player.x, player.y, player.width, player.height);
+					player.x = x;
+					player.y = y;
+					writeToScreen("login: " + login + " x:" + x + " " + "y:" + y);
+				}
 		}
 	else if ( player2.login == login )
 		{
-			player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
+			//player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
 			player2.myContext.clearRect(player2.x, player2.y, player2.width, player2.height);
 			player2.x = x;
 			player2.y = y;
+			writeToScreen("login: " + login + " x:" + x + " " + "y:" + y);
 		}
 	else if ( player3.login == login )
 		{
-			player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
+			//player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
 			player3.myContext.clearRect(player3.x, player3.y, player3.width, player3.height);
 			player3.x = x;
 			player3.y = y;
+			writeToScreen("login: " + login + " x:" + x + " " + "y:" + y);
 		}
 	else if ( player2.login == "" )
 		{
 			player2.login = login;
-			player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
+			//player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
 			player2.myContext.clearRect(player2.x, player2.y, player2.width, player2.height);
 			player2.x = x;
 			player2.y = y;
+			alert("error2");
 		}
 	else if ( player3.login == "" )
 		{
 			player3.login = login;
-			player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
+			//player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
 			player3.myContext.clearRect(player3.x, player3.y, player3.width, player3.height);
 			player3.x = x;
 			player3.y = y;
+			alert("error3");
 		}
 }
 
@@ -150,12 +171,15 @@ function gravity()
 {
 	if ( player.y < (canvasHeight - 20) )
 		{
+			// player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
 			player.myContext.clearRect(player.x, player.y, player.width, player.height);
-			player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
 			player.y = player.y + 2;
-			
-			//doSend("toMembersOfGame" + "," + "move" + "," +  player.role + "," + player.x + "," + player.y ); //отправляем координаты через функцию файла wsclient.js
 		}
+}
+
+function attack()
+{
+	
 }
 
 var forwardId; // для интервалов ходьбы вперед и назад (чтобы не суммировалась скорость)
@@ -167,19 +191,19 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 		{
 			if( forwardId == null )
 				{
-					forwardId = setInterval(function(){movePlayer(player.role,"forward");}, 30 ); //идем пока клавиша нажата
+					forwardId = setInterval(function(){movePlayer("forward");}, 30 ); //идем пока клавиша нажата
 				}
 		}
 	else if( event.keyCode == 65) //назад
 		{
 			if( backId == null)
 				{
-					backId = setInterval(function(){movePlayer(player.role,"back");}, 30 ); //идем пока клавиша нажата
+					backId = setInterval(function(){movePlayer("back");}, 30 ); //идем пока клавиша нажата
 				}
 		}
 	else if( event.keyCode == 87) //прыжок
 		{
-			movePlayer(player.role,"jump");
+			movePlayer("jump");
 		}
 	else if( event.keyCode == 83) //присед
 		{
@@ -187,13 +211,13 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 		}
 	else if( event.keyCode == 68 && event.keyCode == 87 ) //прыжок со смещением вперед
 		{
-			movePlayer(player.role,"jump");
-			movePlayer(player.role,"forward");
+			movePlayer("jump");
+			movePlayer("forward");
 		}
 	else if( event.keyCode == 65 && event.keyCode == 87 ) //прыжок со смещением назад
 		{
-			movePlayer(player.role,"jump");
-			movePlayer(player.role,"back");
+			movePlayer("jump");
+			movePlayer("back");
 		}
 }
 
@@ -231,7 +255,10 @@ function getUserData()
 				player.lvl = data.result[3];
 				player.exp = data.result[4];
 				
-				$("#character").append("<p>" + player.name + "</p>");
+				$("#character").append("<div>Login: " + player.login + "</div>");
+				$("#character").append("<div>Name: " + player.name + "</div>");
+				$("#character").append("<div>lvl: " + player.lvl + "</div>");
+				$("#character").append("<div>exp: " + player.exp + "</div>");
 			}
 		}
 	})

@@ -1,5 +1,4 @@
 
-//var wsUri = "ws://172.0.0.1:8080/GameServer/websocket";
 var wsUri = "ws://427044.dyn.ufanet.ru:8080/GameServer/websocket";
 var output;
 
@@ -66,25 +65,29 @@ function onMessage(evt)
 {		
 	msg = evt.data.split(',');
 
-	if ( msg[0] == "id" )
-		{
-			//writeToScreen('<span style="color: blue;">RESPONSE: '+ "id:" + msg[0]+ " " + "x: " +  msg[1] + " " + "y: " + msg[2] +'</span>');
-		}
-	else if( msg[0] == "move")
-		{
-			movePlayers(msg[1], msg[2], msg[3]);
-			alert("answer gived");
-			writeToScreen('<span style="color: blue;">RESPONSE: ' +  msg[1] + "," + msg[2] + "," + msg[3] + '</span>');
-		}
-	else if(msg[0] == "chat")
+	if(msg[0] == "chat")
 		{
 			writeToScreen('<span style="color: blue;">RESPONSE: ' +  evt.data + '</span>');
 		}
+	else if( msg[0] == "new" )
+		{
+			writeToScreen(msg[1] + " was connected!");
+			
+			if ( player.login != msg[1] ) //проверяем чтобы это не были мы сами, мы же не хотим еще раз отрисовать себя? )
+				{
+					drawPlayers(msg[1]); //отрисовываем подключившегося
+				}
+			
+		}
+	else if( msg.length == 3 )
+		{
+			movePlayers( msg[0],msg[1],msg[2] );
+		}
 	else
 		{
-			writeToScreen(msg[0]);
+			writeToScreen(msg);
 		}
-	
+
 }
 
 function onError(evt) 
