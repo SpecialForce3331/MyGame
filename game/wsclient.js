@@ -69,19 +69,14 @@ function onMessage(evt)
 		{
 			writeToScreen('<span style="color: blue;">RESPONSE: ' +  evt.data + '</span>');
 		}
-	else if( msg[0] == "new" )
-		{
-			writeToScreen(msg[1] + " was connected!");
-			
-			if ( player.login != msg[1] ) //проверяем чтобы это не были мы сами, мы же не хотим еще раз отрисовать себя? )
-				{
-					drawPlayers(msg[1]); //отрисовываем подключившегося
-				}
-			
-		}
 	else if( msg.length == 3 )
 		{
 			movePlayers( msg[0],msg[1],msg[2] );
+		}
+	else if( msg[0] == "new" ) //при подключении нового игрока обновляем список игроков этой сессии на сервере
+		{
+			doSend("refreshPlayers");
+			writeToScreen( msg[1] + " joined to game!");
 		}
 	else
 		{
