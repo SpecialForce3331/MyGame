@@ -83,6 +83,7 @@ function user(x, y, width, height ) //прототип игрока
 	this.name;
 	this.lvl;
 	this.exp;
+	this.vx = 10;
 	this.x = x;
 	this.y = y;
 	this.width = width;
@@ -100,13 +101,13 @@ function movePlayer(direction) //передвижение игрока
 	
 	if ( direction == "forward" )
 		{
-			player.x = player.x + 2;
+			player.x = player.x + player.vx;
 			doSend("move" + "," +  "forward");
 			drawAnimMove(player.x, player.y, player.width, player.height);
 		}
 	else if ( direction == "back" )
 		{
-			player.x = player.x - 2;
+			player.x = player.x - player.vx;
 			doSend("move" + "," +  "back");
 			drawAnimMove(player.x, player.y, player.width, player.height);
 		}
@@ -194,14 +195,14 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 		{
 			if( forwardId == null )
 				{
-					forwardId = setInterval(function(){movePlayer("forward");}, 30 ); //идем пока клавиша нажата
+					forwardId = setInterval(function(){movePlayer("forward");}, 50 ); //идем пока клавиша нажата
 				}
 		}
 	else if( event.keyCode == 65) //назад
 		{
 			if( backId == null)
 				{
-					backId = setInterval(function(){movePlayer("back");}, 30 ); //идем пока клавиша нажата
+					backId = setInterval(function(){movePlayer("back");}, 50 ); //идем пока клавиша нажата
 				}
 		}
 	else if( event.keyCode == 87) //прыжок
