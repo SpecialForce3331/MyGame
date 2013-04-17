@@ -7,6 +7,7 @@
 		<script type="text/javascript" src="wsclient.js"></script>
 		<script type="text/javascript" src="/MyGame/jquery-1.8.3.js"></script>
 		<body bgcolor="white">
+		<div id="fps"></div>
 		<button onclick="websocket.close();">Выйти на личную страницу</button><br />
 			Сообщение в чат: <input type="text" id="chatMessage" /><button onclick="doSend( 'toMembersOfGame' + ',' + 'chat' + ',' + document.getElementById('chatMessage').value )">отправить</button><br/>
 			<div id="character"></div>

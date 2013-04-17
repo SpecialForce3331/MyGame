@@ -2,18 +2,21 @@
 var context;
 var drawingCanvas;
 
-//для отрисовки персонажей
-var currentFrame=0;
-var numberOfFrames,xOffset,frameWidth,frameHeight,currentFrame; 
+var currentFrame = 0;
+var numberOfFrames = 11;
+var xFrame;
+var yFrame = 0;
+//Отрисовка рыцаря     
+img = new Image();
+img.src="sprites/atack.png";
+//img.src="sprites/knight_sprite.gif";
 
 //Ширина и высота холста
-var canvasHeight = 260;
-var canvasWidth = 450;
-
+var canvasHeight = 300;
+var canvasWidth = 600;
 
 window.onload = function() {
-	
-	
+
 	//устанавливаем нужные размеры холста
 	
 	//слушаем нажатие клавиш
@@ -31,58 +34,48 @@ window.onload = function() {
 	context = drawingCanvas.getContext('2d');
 	
      // Рисуем землю
-     context.moveTo(0.5,canvasHeight-10);
-     context.lineTo(450,canvasHeight-10);
+     context.moveTo(0.5,canvasHeight);
+     context.lineTo(600,canvasHeight);
      context.strokeStyle = "#000";
      context.stroke();
      
-     //Отрисовка рыцаря     
-     img = new Image();
-     img.src="sprites/knight_sprite.gif"
-     img.onload = function()
-     {
-    	 numberOfFrames=6;
-    	 frameHeight=img.height/6;
-    	 setInterval("drawSprite()",120);
-     }
      
-     
-     //рисуем игрока 
-     player = new user(10, canvasHeight-20, 10, 10, 1);
-     player.color = "black";
+     //рисуем игроков
+     player = new user(10, canvasHeight-66.8, img.width/11, img.height);
      player.draw();
      
-     player2 = new user(30, canvasHeight-20, 10, 10, 2);
-     player2.color = "blue";
+     player2 = new user(50, canvasHeight-70, img.width/11 - 20, img.height);
      player2.draw();
      
-     player3 = new user(50, canvasHeight-20, 10, 10, 3);
-     player3.color = "red";
+     player3 = new user(90, canvasHeight-70, img.width/11 - 20, img.height);
      player3.draw();
      
  
    //отрисовываем игроков с частотой 60 fps, 24 кадра в секунду
- 	setInterval(function(){player.draw();}, 2.5); 
-	setInterval(function(){player2.draw()}, 2.5);
-	setInterval(function(){player3.draw()}, 2.5); 
+ 	//setInterval(function(){player.draw();}, 1000/16); 
+	//setInterval(function(){player2.draw();}, 1000/16);
+	//setInterval(function(){player3.draw();}, 1000/16); 
  	
  	setInterval(function(){gravity();}, 6);
    	
  	getUserData(); //получаем роль игрока
 }
 
-function drawSprite()
+function drawAnimMove(x,y,width,height) //функция отображения анимации движения персонажа
 {
 	 currentFrame++;
 	 if (currentFrame == numberOfFrames)
-	 currentFrame=0;
-	 frameWidth=img.width/6;
-	 xOffset=frameWidth*currentFrame;
-	 context.clearRect ( 200, 200, frameWidth, frameHeight );
-	 context.drawImage(img, xOffset, 275,frameWidth, frameHeight, 200, 200, frameWidth, frameHeight);
+		 {
+		 	currentFrame=0;
+		 } 
+	 frameWidth=img.width/11;
+	 xFrame=frameWidth*currentFrame;
+	 context.clearRect ( x, y, width, height );
+	 context.drawImage(img, xFrame, yFrame,frameWidth, player.height, x, y, width, height);
 }
 
-function user(x, y, width, height) //прототип игрока
+
+function user(x, y, width, height ) //прототип игрока
 {
 	this.myContext = context;
 	this.role = "";
@@ -94,37 +87,36 @@ function user(x, y, width, height) //прототип игрока
 	this.y = y;
 	this.width = width;
 	this.height = height;
-	this.color;
 	this.weight = 2;
 	this.draw = function( x,y )
 	{
-		this.myContext.fillStyle = this.color;
-		//this.myContext.fillText(this.name, this.x - 1, this.y);
-		this.myContext.fillRect(this.x, this.y, this.width, this.height);
+		this.myContext.drawImage( img, img.width/11, 0, this.width, this.height, this.x, this.y, this.width, this.height );
 	}
 }	
 
 function movePlayer(direction) //передвижение игрока
 {	
-	//player.myContext.clearRect(player.x, player.y - 10, player.width + 10, player.height + 10); //очищаем область где отображается ник
 	player.myContext.clearRect(player.x, player.y, player.width, player.height);
 	
 	if ( direction == "forward" )
 		{
 			player.x = player.x + 2;
 			doSend("move" + "," +  "forward");
+			drawAnimMove(player.x, player.y, player.width, player.height);
 		}
 	else if ( direction == "back" )
 		{
 			player.x = player.x - 2;
 			doSend("move" + "," +  "back");
+			drawAnimMove(player.x, player.y, player.width, player.height);
 		}
 	else if ( direction == "jump" )
 		{
-			if ( player.y == ( canvasHeight - 20 ))
+			if ( player.y == ( canvasHeight - 70 ))
 			{
 				player.y = player.y - 80;
 				doSend("move" + "," +  "jump");
+				player.draw();
 			}
 		}
 }
@@ -134,57 +126,57 @@ function movePlayers(login, x, y) //функция отвечающая за п�
 	if ( player.login == login )
 		{
 			if( player.x != x || player.y != y ) //если координаты игрока отличаются от тех что на сервере, то правим
-				{
-					//player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
+				{					
 					player.myContext.clearRect(player.x, player.y, player.width, player.height);
 					player.x = x;
 					player.y = y;
+					drawAnimMove(player.x, player.y, player.width, player.height);
 					writeToScreen("login: " + login + " x:" + x + " " + "y:" + y);
 				}
 		}
 	else if ( player2.login == login )
-		{
-			//player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
+		{		
 			player2.myContext.clearRect(player2.x, player2.y, player2.width, player2.height);
 			player2.x = x;
 			player2.y = y;
+			player2.draw();
 			writeToScreen("login: " + login + " x:" + x + " " + "y:" + y);
 		}
 	else if ( player3.login == login )
-		{
-			//player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
+		{			
 			player3.myContext.clearRect(player3.x, player3.y, player3.width, player3.height);
 			player3.x = x;
 			player3.y = y;
+			player3.draw();
 			writeToScreen("login: " + login + " x:" + x + " " + "y:" + y);
 		}
 	else if ( player2.login == "" )
 		{
 			player2.login = login;
-			//player2.myContext.clearRect(player2.x, player2.y - 10, player2.width, player2.height + 10);
 			player2.myContext.clearRect(player2.x, player2.y, player2.width, player2.height);
 			player2.x = x;
 			player2.y = y;
+			player2.draw();
 			writeToScreen(login + " is entered in game as player2");
 		}
 	else if ( player3.login == "" )
 		{
 			player3.login = login;
-			//player3.myContext.clearRect(player3.x, player3.y - 10, player3.width, player3.height + 10);
 			player3.myContext.clearRect(player3.x, player3.y, player3.width, player3.height);
 			player3.x = x;
 			player3.y = y;
+			player3.draw();
 			writeToScreen(login + " is entered in game as player3");
 		}
 }
 
 function gravity()
 {
-	if ( player.y < (canvasHeight - 20) )
+	if ( player.y < (canvasHeight - 70) )
 		{
-			// player.myContext.clearRect(player.x, player.y - 10, player.width, player.height + 10);
 			player.myContext.clearRect(player.x, player.y, player.width, player.height);
 			player.y = player.y + 2;
+			player.draw();
 		}
 }
 
@@ -218,7 +210,7 @@ function doKeyDown(event) //при нажатии клавиш управлен�
 		}
 	else if( event.keyCode == 83) //присед
 		{
-			//movePlayer(player.role,"down");
+			//movePlayer("down");
 		}
 	else if( event.keyCode == 68 && event.keyCode == 87 ) //прыжок со смещением вперед
 		{
@@ -239,11 +231,17 @@ function doKeyUp( event ) //при отжатии клавиши вперед и
 	{
 		clearInterval( forwardId );
 		forwardId = null;
+		
+		player.myContext.clearRect(player.x, player.y, player.width, player.height);
+		player.draw();
 	}
 	else if( event.keyCode == 65 ) //назад
 	{
 		clearInterval( backId );
 		backId = null;
+		
+		player.myContext.clearRect(player.x, player.y, player.width, player.height);
+		player.draw();
 	}
 
 }
